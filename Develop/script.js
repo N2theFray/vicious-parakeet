@@ -8,9 +8,21 @@ var randomLetter = function (){
 }
 
 var randomCharacter =function (){
-  var value = Math.floor(Math.random()*7+1);
+  var value = Math.floor(Math.random()*6+1);
   return value;
 }
+
+var randomNumeric = function () {
+  var value = Math.floor(Math.random()*9+1);
+  return value;
+}
+
+// rock paper scissors lizard spock ;)
+var lizardSpock = function () {
+  var value = Math.floor(Math.random()*4+1);
+  return value;
+}
+// validation of user choices
 
 // arrays holding values for password
 var lowerAlphabetArray = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
@@ -20,84 +32,94 @@ var upperAlphabetArray = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
 "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
 var charArray = ['!','@','#','$','%','&','*'];
- console.log(upperAlphabetArray[3]);
-
+// object to call for user choice
 
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
 function writePassword() {
+  var generatePassword = function () {
+    var userPasswordLengthInput = function (){
+        
+      var desiredLength = window.prompt ("How many digits does your password require?");
+        desiredLength = parseInt(desiredLength);
+      
+      if (desiredLength >= 1 && desiredLength <= 128) {
+        return desiredLength;
+      } else {
+        window.alert ("Try again");
+        return userPasswordLengthInput();
+      }
+    } 
+    var passwordHolder = [];
     debugger;
-    //Validation of choices
-    var passwordLength = userPasswordLengthInput() 
-    var passwordCharacters = userPasswordCharacterInput ()
-    var passwordUpper = userPasswordUpperInput ()
-    var passwordLower = userPasswordLowerInput ()
-    var passwordNumeric = userPasswordNumericInput ()
-    // function to determine characteristics of password 
-      function userPasswordLengthInput (){
-        
-        var desiredLength = window.prompt ("How many digits does your password require?");
-          desiredLength = parseInt(desiredLength);
-        
-        if (desiredLength >= 1 && desiredLength <= 128) {
-          return desiredLength;
-        } else {
-          window.alert ("Try again");
-          return userPasswordLengthInput();
-        }
-      } 
-      
-      function userPasswordCharacterInput () {
-        
-        var wantsCharacters = window.confirm ("Do you want special characters?");
-        if (wantsCharacters) {
-          return true;
-        }
-      }
+      var wantsCharacters = window.confirm ("Do you want special characters?");
+        if (wantsCharacters) {passwordHolder.push (charArray[randomCharacter()])};
+      var wantsUpper = window.confirm ("Do you want special characters?");
+        if (wantsUpper) {passwordHolder.push (upperAlphabetArray[randomCharacter()])};
+      var wantsLower = window.confirm ("Do you want lowercase characters?")
+        if (wantsLower) {passwordHolder.push (lowerAlphabetArray[randomCharacter()])};
+      var wantsNumbers = window.confirm ("Do you want numeric characters?")
+        if (wantsNumbers) {passwordHolder.push (randomNumeric())}
+      console.log(passwordHolder)
 
-      function userPasswordUpperInput () {
-        var wantsUpper = window.confirm ("Do you want special characters?");
-        if (wantsUpper) {
-          return true; 
-        } 
+      var userChoice ={
+        length: userPasswordLengthInput(),
+        characters: wantsCharacters,
+        upper: wantsUpper,
+        lower: wantsLower,
+        numeric: wantsNumbers,
       }
-
-      function userPasswordLowerInput () {
-        var wantsLower = window.confirm ("Do you want lowercase characters?")
-        if (wantsLower) {
-          return true;
-        }
-      }
-
-      function userPasswordNumericInput () {
-        var wantsNumbers = window.confirm ("Do you want numeric characters?")
-        if (wantsNumbers) {
-          return true;
-        }
-      }
-
-    var generatePassword = function () {
-      
-      var passwordHolder = [];
+   
+    // debugger;
     
-      for (var i = 0; i < passwordLength; i++){
-        passwordHolder[i]=lowerAlphabetArray[randomLetter()];
+    if (userChoice.characters === true || userChoice.length === true || userChoice.upper === true ||userChoice.lower === true) {
+      var choiceValidate = true;
+     } else {choiceValidate = false;}
+    
+      
+    
+
+    //for iteration of password length
+
+    if (choiceValidate){
+      for (var i = passwordHolder.length + 1; i < userChoice.length; i++){
+        // debugger;
+        passwordHolder[i]=switcherFunction(lizardSpock());
       }
+    } else {
+      window.alert("You must choose at least one option");
+      generatePassword();}
 
-      // Turn passwordHolder into a string
-      var passwordToString = passwordHolder.join('');
-      return passwordToString;
-    }
+      var switcherFunction = lizardSpock();
+      //switcher for inputs
+      switch (switcherFunction) {
+        case 1:
+          if (userChoice.characters){
+            return charArray[randomCharacter()];
+          } 
+        case 2: 
+          if (userChoice.upper) {
+            return upperAlphabetArray[randomLetter()];
+          } 
+        case 3: 
+          if (userChoice.lower) {
+            return lowerAlphabetArray[randomLetter()];
+          } 
+        case 4:
+          if (userChoice.numeric){
+            return randomNumeric()
+          }
+        } 
 
-    var password = generatePassword();
-    var passwordText = document.querySelector("#password"); 
+    // Turn passwordHolder into a string
+    var passwordToString = passwordHolder.join('');
+    return passwordToString;
+  }
 
-
-
-
-
+  var password = generatePassword();
+  var passwordText = document.querySelector("#password"); 
   passwordText.value = password;
 
 }

@@ -75,54 +75,52 @@ function writePassword() {
       
     
     // check validity of user choices to include at least one type of character
- if (userChoice.characters === true || userChoice.length === true || userChoice.upper === true ||userChoice.lower === true) {
-  window.alert("Password coming right up!")
-} else  {
-  window.alert("You must choose at least one type of character to generate a password");
-  return generatePassword();
-}
-
-// workhorse of the generator. validates choice being true, iterates through random selection of inputs
-
-  for (var i = passwordHolder.length ; i < userChoice.length; i++){
-    
-    // rock paper scissors lizard spock ;) <----creates a random number to insure the following values are random
-    var lizardSpock = function () {
-      var value = Math.floor(Math.random()*4+1);
-      return value;
+    if (userChoice.characters === true || userChoice.length === true || userChoice.upper === true ||userChoice.lower === true) {
+      window.alert("Password coming right up!")
+    } else  {
+      window.alert("You must choose at least one type of character to generate a password");
+      return generatePassword();
     }
 
-    //initilizes the switcherFunction 
-    var switcherFunction = lizardSpock();
+    // workhorse of the generator. Iterates through random selection of inputs
+    for (var i = passwordHolder.length ; i < userChoice.length; i++){
+      
+      // rock paper scissors lizard spock ;) <----creates a random number to insure the following values are random
+      var lizardSpock = function () {
+        var value = Math.floor(Math.random()*4+1);
+        return value;
+      }
 
-    //switcher for inputs
-    switch (switcherFunction) {
-      case 1:
-        if (userChoice.characters){
-          passwordHolder.push(charArray[randomCharacter()]);
-          break;
+      //initilizes the switcherFunction 
+      var switcherFunction = lizardSpock();
+
+      //switcher for inputs
+      switch (switcherFunction) {
+        case 1:
+          if (userChoice.characters){
+            passwordHolder.push(charArray[randomCharacter()]);
+            break;
+          } 
+        case 2: 
+          if (userChoice.upper) {
+            passwordHolder.push(upperAlphabetArray[randomLetter()]);
+            break;
+          } 
+        case 3: 
+          if (userChoice.lower) {
+            passwordHolder.push(lowerAlphabetArray[randomLetter()]);
+            break;
+          } 
+        case 4:
+          if (userChoice.numeric){
+            passwordHolder.push(randomNumeric());
+            break;
+          }
+        // to ensure that the i is subtracted in the case that it falls to the end due to false values and the loop continues
+        default: 
+          i = i-1;
         } 
-      case 2: 
-        if (userChoice.upper) {
-          passwordHolder.push(upperAlphabetArray[randomLetter()]);
-          break;
-        } 
-      case 3: 
-        if (userChoice.lower) {
-          passwordHolder.push(lowerAlphabetArray[randomLetter()]);
-          break;
-        } 
-      case 4:
-        if (userChoice.numeric){
-          passwordHolder.push(randomNumeric());
-          break;
-        }
-      // to ensure that the i is subtracted in the case that it falls to the end due to false values and the loop continues
-      default: 
-        i = i-1;
-      } 
-  }
-    //  debugger; 
+    }
 
     // Turn passwordHolder into a string
     var passwordToString = passwordHolder.join('');

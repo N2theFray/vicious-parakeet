@@ -73,11 +73,9 @@ function writePassword() {
       numeric: wantsNumbers,
     }
       
-    
+    debugger;
     // check validity of user choices to include at least one type of character
-    if (userChoice.characters === true || userChoice.length === true || userChoice.upper === true ||userChoice.lower === true) {
-      window.alert("Password coming right up!")
-    } else  {
+    if (userChoice.characters === false && userChoice.numeric === false && userChoice.upper === false && userChoice.lower === false){
       window.alert("You must choose at least one type of character to generate a password");
       return generatePassword();
     }
